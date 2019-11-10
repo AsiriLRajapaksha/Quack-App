@@ -7,16 +7,16 @@ import 'dart:async';
 class QuackHome extends StatelessWidget {
   List features;
 
-  QuackHome({
-    Key key,
-    this.features,
-  }) : super(key: key);
+  QuackHome({Key key, this.features,}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Quack",
-          style: new TextStyle(),),
+        title: new Text(
+          "Quack",
+          style: new TextStyle(),
+        ),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
@@ -24,41 +24,55 @@ class QuackHome extends StatelessWidget {
         child: new ListView.builder(
             itemCount: features.length,
             itemBuilder: (BuildContext context, int position) {
-          if (position.isOdd) return new Divider();
+              if (position.isOdd) return new Divider(); // creating the row for our listview
 
-          final index = position ~/ 2 ;
+              final index = position ~/ 2;
 
-          var date = new DateTime.fromMicrosecondsSinceEpoch( features[index]['properties']['time']*1000, isUtc: false);
+              var date = new DateTime.fromMicrosecondsSinceEpoch(
+                  features[index]['properties']['time'] * 1000,
+                  isUtc: false);
 
-          return new ListTile(
-
-            title: new Text("$date",
-              style: new TextStyle(
-                  color: Colors.orangeAccent,
-                  fontSize: 15.5,
-                  fontWeight: FontWeight.w500),
-            ),
-            subtitle: new Text("${features[index]['properties']['place']}",
-              style: new TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14.0,
-                  fontStyle: FontStyle.italic
-              ),
-            ),
-            leading: new CircleAvatar(
-              child: new Text("${features[index]['properties']['mag']}",
-                style: new TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.bold
-                )),
-              backgroundColor: Colors.green,
-
-            ),
-          );
-        }),
+              return new ListTile(
+                title: new Text(
+                  "$date",
+                  style: new TextStyle(
+                      color: Colors.orangeAccent,
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w500),
+                ),
+                subtitle: new Text(
+                  "${features[index]['properties']['place']}",
+                  style: new TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.0,
+                      fontStyle: FontStyle.italic),
+                ),
+                leading: new CircleAvatar(
+                  child: new Text("${features[index]['properties']['mag']}",
+                      style: new TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.5,
+                          fontWeight: FontWeight.bold)),
+                  backgroundColor: Colors.green,
+                ),
+                onTap: () { showAlertMessage(context , "${features[index]["properties"]["type"]}");},
+              );
+            }),
       ),
     );
   }
+
+  // method for get alert message
+  void showAlertMessage(BuildContext context, String Message) {
+    var alert = new AlertDialog(
+      title: new Text("Quack"),
+      content: new Text("$Message"),
+      actions: <Widget>[
+        new FlatButton(onPressed: () {Navigator.pop(context);}, child: new Text("OK"))
+      ],
+    );
+    showDialog(context: context , child: alert);
+  }
+  
 }

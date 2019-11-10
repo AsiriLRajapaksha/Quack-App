@@ -9,7 +9,5 @@ void main() async {
   Map _data = await getQuack();
   features = _data['features'];
 
-  runApp(new MyApp(
-    features: features,
-  ));
+  runApp(new MyApp(features: features,));
 }
